@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto-QC Finder</title>
+  <style>
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; }
+    body { background-color: #0b0f19; color: #f1f5f9; padding: 20px; min-height: 100vh; }
+    h1 { text-align: center; margin-bottom: 10px; color: #38bdf8; font-size: 24px; }
+    p.sub { text-align: center; color: #94a3b8; margin-bottom: 25px; font-size: 13px; }
+    .fetch-box { max-width: 700px; margin: 0 auto 30px auto; background: #161e2e; padding: 15px; border-radius: 12px; border: 1px solid #1e293b; }
+    .input-group { display: flex; flex-direction: column; gap: 10px; }
+    input { width: 100%; padding: 14px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 15px; outline: none; }
+    button { background: #0284c7; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; }
+    .loading { text-align: center; color: #38bdf8; font-weight: bold; margin: 20px 0; display: none; }
+    .results { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+    .qc-card { background: #161e2e; border-radius: 10px; overflow: hidden; border: 1px solid #1e293b; }
+    .qc-card img { width: 100%; height: 160px; object-fit: cover; }
+    .qc-info { padding: 10px; font-size: 12px; color: #94a3b8; }
+  </style>
+</head>
+<body>
+
+  <h1>Automatischer QC-Finder</h1>
+  <p class="sub">Füge einen Link ein, um QC-Bilder zu laden.</p>
+
+  <div class="fetch-box">
+    <div class="input-group">
+      <input type="text" id="linkInput" placeholder="Weidian / Taobao Link hier einfügen...">
+      <button onclick="fetchQCPhotos()">QC Suchen</button>
+    </div>
+    <div id="loadingText" class="loading">Lade QC-Fotos...</div>
+  </div>
+
+  <div class="results" id="resultsGrid"></div>
+
+  <script>
+    function fetchQCPhotos() {
+      const link = document.getElementById("linkInput").value.trim();
+      const resultsGrid = document.getElementById("resultsGrid");
+      const loadingText = document.getElementById("loadingText");
+      if (!link) { alert("Bitte einen Link einfügen!"); return; }
+      resultsGrid.innerHTML = "";
+      loadingText.style.display = "block";
+      setTimeout(() => {
+        loadingText.style.display = "none";
+        const mockQCFotos = [
+          "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500&q=80",
+          "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=500&q=80",
+          "https://images.unsplash.com/photo-1517445312882-bc9910d016b7?w=500&q=80"
+        ];
+        mockQCFotos.forEach((imgUrl, index) => {
+          const card = document.createElement("div");
+          card.className = "qc-card";
+          card.innerHTML = `<img src="${imgUrl}"><div class="qc-info">QC Foto #${index + 1}</div>`;
+          resultsGrid.appendChild(card);
+        });
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
